@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.sampled.Port;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,9 @@ public class ProjectController {
         Project project = projectService.findProjectByIdentifier(projectId);
         return new ResponseEntity<Project>(project, HttpStatus.OK);
     }
+
+    @GetMapping("/all")
+    public Iterable<Project> getAllProjects(){return projectService.findAllProjects();}
 
 
 
