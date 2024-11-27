@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.validation.FieldError;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Backlog {
 
@@ -20,7 +23,12 @@ public class Backlog {
     @JsonIgnore
     //jsonignore stop the recursion when no id when create project
     private Project project;
+
     //OneToMany project tasks
+    //One backlog can have many tasks
+    //A task can only belong to one backlog
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+    private List<ProjectTask> projectTasks = new ArrayList<>();
 
     public Backlog() {
     }
@@ -55,5 +63,13 @@ public class Backlog {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<ProjectTask> getProjectTasks() {
+        return projectTasks;
+    }
+
+    public void setProjectTasks(List<ProjectTask> projectTasks) {
+        this.projectTasks = projectTasks;
     }
 }
