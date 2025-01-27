@@ -73,6 +73,9 @@ public class ProjectTaskService {
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 
+    //Find ProjectTask by projectSequence
+    //backlog_id is projectIdentifier like ID01
+    //pt_id is projectSequence like ID01-1, ID01-2
     public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id){
 
         //make sure we are searching on an existing backlog
@@ -95,4 +98,25 @@ public class ProjectTaskService {
 
         return projectTask;
     }
+
+    //Update project task
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id){
+        //find existing project task
+        ProjectTask projectTask = projectTaskRepository.findByProjectSequence(pt_id);
+
+        //replace it with updated task
+        projectTask = updatedTask;
+
+        //save update
+        return projectTaskRepository.save(projectTask);
+    }
+
+
+
+
+
+
+
+
+
 }
