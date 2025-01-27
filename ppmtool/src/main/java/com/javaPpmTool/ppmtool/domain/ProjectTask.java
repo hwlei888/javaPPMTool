@@ -23,7 +23,7 @@ public class ProjectTask {
     //ManyToOne with Backlog
     //A task can only belong to one backlog
     //One backlog can have many tasks
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER) // Remove Refresh, refresh the owning side of this relationship, so refresh in Backlog.java
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     @JsonIgnore
     private Backlog backlog;

@@ -27,7 +27,11 @@ public class Backlog {
     //OneToMany project tasks
     //One backlog can have many tasks
     //A task can only belong to one backlog
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "backlog")
+
+    //refresh the owning side of this relationship, so refresh in Backlog.java
+    //add orphanRemoval, when the child entity is no longer referenced from the parent, then it also gets rid of child
+    //when delete project, we want child objects: backlog and project task to go away
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "backlog", orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
     public Backlog() {
