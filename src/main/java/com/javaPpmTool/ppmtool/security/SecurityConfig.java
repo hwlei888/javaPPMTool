@@ -62,6 +62,7 @@ public class SecurityConfig {
                                 "/",
                                 "/favicon.ico"
                         ).permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
                         .anyRequest().authenticated() //anything other than that we need to have authentication
                 );
 
