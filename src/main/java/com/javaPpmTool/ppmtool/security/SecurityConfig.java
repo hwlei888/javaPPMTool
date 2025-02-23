@@ -30,51 +30,10 @@ import static com.javaPpmTool.ppmtool.security.SecurityConstants.SIGN_UP_URLS;
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
-    // Original outdated code
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//        authenticationManagerBuilder.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);
-//    }
-//
-//    @Override
-//    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-//    protected AuthenticationManager authenticationManager() throws Exception {
-//        return super.authenticationManager();
-//    }
-
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-//        http.cors().and().csrf().disable()
-//                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .headers(headers -> headers.frameOptions().sameOrigin())
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(
-//                        "/",
-//                        "/favicon.ico",
-//                        "/**/*.png",
-//                        "/**/*.gif",
-//                        "/**/*.svg",
-//                        "/**/*.jpg",
-//                        "/**/*.html",
-//                        "/**/*.css",
-//                        "/**/*.js"
-//                ).permitAll()
-//                .anyRequest().authenticated();
-//    };
 
 
     @Bean
@@ -97,8 +56,6 @@ public class SecurityConfig {
         http
                 // Disable CSRF for simplicity
                 .csrf(csrf -> csrf.disable())
-                // It is the authentication entrypoint that handles what exceptions need to be thrown when someone is not authenticated
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 // this is a rest API, want to keep server stateless, don't want to save sessions or cookies, the server doesn't have to hold a session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // To enable H2 Database
@@ -115,33 +72,5 @@ public class SecurityConfig {
 
         return http.build();
     };
-
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .headers(headers -> headers.frameOptions().sameOrigin()) // To enable H2 Database
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // Protect /admin
-//                        .requestMatchers("/user/**").hasRole("USER") // Protect /user
-//                        .anyRequest().authenticated() // All other requests require authentication
-//                )
-//                .formLogin(login -> login
-//                        .loginPage("/login") // Custom login page
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .permitAll()
-//                );
-//
-//        return http.build();
-//    }
-
-
-
 
 }

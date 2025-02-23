@@ -1,9 +1,7 @@
 package com.javaPpmTool.ppmtool.web;
 
 import com.javaPpmTool.ppmtool.domain.User;
-import com.javaPpmTool.ppmtool.payload.JWTLoginSuccessResponse;
 import com.javaPpmTool.ppmtool.payload.LoginRequest;
-import com.javaPpmTool.ppmtool.security.JwtTokenProvider;
 import com.javaPpmTool.ppmtool.services.MapValidationErrorService;
 import com.javaPpmTool.ppmtool.services.UserService;
 import com.javaPpmTool.ppmtool.validator.UserValidator;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.javaPpmTool.ppmtool.security.SecurityConstants.TOKEN_PREFIX;
-
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -35,9 +31,6 @@ public class UserController {
 
     @Autowired
     private UserValidator userValidator;
-
-    @Autowired
-    private JwtTokenProvider tokenProvider;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -55,9 +48,10 @@ public class UserController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
 
-        return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
+        String response = "User logged-in successfully!";
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 
