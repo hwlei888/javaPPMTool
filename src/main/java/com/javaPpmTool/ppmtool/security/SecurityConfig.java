@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -110,7 +111,7 @@ public class SecurityConfig {
                         .requestMatchers(SIGN_UP_URLS).permitAll()
                         .requestMatchers(H2_URL).permitAll()
                         .anyRequest().authenticated() //anything other than that we need to have authentication
-                );
+                ).httpBasic(Customizer.withDefaults());
 
         return http.build();
     };
