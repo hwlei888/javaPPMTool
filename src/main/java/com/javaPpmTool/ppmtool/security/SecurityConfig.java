@@ -23,7 +23,9 @@ public class SecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private UserDetailsService userDetailsService;
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
 
     // add @Bean so that spring container can manage the object of DefaultSecurityFilterChain object
     @Bean
@@ -34,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll() // Allows public access to /
                         .anyRequest().authenticated() // Other requests need authentication
                 ).httpBasic(Customizer.withDefaults());
+
 //                .authorizeHttpRequests((authorize) -> {
 //                    // all http POST & DELETE request starts with /api should be accessible by all users have admin role
 //                    // all http PATCH request starts with /api should be accessible by all users have admin & user role
@@ -76,12 +79,6 @@ public class SecurityConfig {
 //
 //        return new InMemoryUserDetailsManager(hwl, admin);
 //    }
-
-
-
-
-
-
 
 
 
