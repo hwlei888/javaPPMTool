@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll() // Allows public access to /
+                        .requestMatchers("/api/users/**").permitAll() // Allows public access to /
                         .anyRequest().authenticated() // Other requests need authentication
                 ).httpBasic(Customizer.withDefaults());
 
@@ -60,25 +61,6 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
-
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails hwl = User.builder()
-//                .username("hwl")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                .roles("ADMIN")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(hwl, admin);
-//    }
 
 
 
