@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll() // Allows public access to /
+                        .requestMatchers("/api/users/**").permitAll() // Allows public access to /
                         .anyRequest().authenticated() // Other requests need authentication
                 ).httpBasic(Customizer.withDefaults());
 
