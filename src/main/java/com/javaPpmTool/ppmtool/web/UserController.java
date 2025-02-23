@@ -1,6 +1,7 @@
 package com.javaPpmTool.ppmtool.web;
 
 import com.javaPpmTool.ppmtool.domain.Register;
+import com.javaPpmTool.ppmtool.payload.LoginRequest;
 import com.javaPpmTool.ppmtool.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,12 @@ public class UserController {
     public ResponseEntity<String> registerUser(@RequestBody Register register){
         String response = authService.register(register);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        String response = authService.login(loginRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
