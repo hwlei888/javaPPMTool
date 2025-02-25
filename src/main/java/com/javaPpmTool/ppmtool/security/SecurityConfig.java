@@ -10,8 +10,8 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // we use EnableMethodSecurity to enable method level security, and also to use PreAuthorize (ProjectController)
 @Configuration
@@ -20,10 +20,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    // when unauthenticated user tries to access the resource then spring security throws authentication exception
+    // JwtAuthenticationEntryPoint class will catch that exception and return the error response to the client
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+
+    private JwtAuthenticationFilter authenticationFilter;
 
 
     // add @Bean so that spring container can manage the object of DefaultSecurityFilterChain object
@@ -31,11 +34,15 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .csrf(csrf -> csrf.disable())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/").permitAll() // Allows public access to /
                         .requestMatchers("/api/users/**").permitAll() // Allows public access to /
                         .anyRequest().authenticated() // Other requests need authentication
                 ).httpBasic(Customizer.withDefaults());
+
+        // use addFilterBefore to add JWT authentication filter before spring security filters
+        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 //                .authorizeHttpRequests((authorize) -> {
 //                    // all http POST & DELETE request starts with /api should be accessible by all users have admin role
