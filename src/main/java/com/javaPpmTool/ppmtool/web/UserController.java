@@ -1,6 +1,7 @@
 package com.javaPpmTool.ppmtool.web;
 
 import com.javaPpmTool.ppmtool.domain.Register;
+import com.javaPpmTool.ppmtool.payload.JwtAuthResponse;
 import com.javaPpmTool.ppmtool.payload.LoginRequest;
 import com.javaPpmTool.ppmtool.services.AuthService;
 import lombok.AllArgsConstructor;
@@ -41,10 +42,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
-        String response = authService.login(loginRequest);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginRequest loginRequest){
+        String token = authService.login(loginRequest);
+
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
-
-
 }

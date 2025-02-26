@@ -5,6 +5,7 @@ import com.javaPpmTool.ppmtool.domain.User;
 import com.javaPpmTool.ppmtool.exceptions.TodoAPIException;
 import com.javaPpmTool.ppmtool.payload.LoginRequest;
 import com.javaPpmTool.ppmtool.repositories.UserRepository;
+import com.javaPpmTool.ppmtool.security.JwtTokenProvider;
 import com.javaPpmTool.ppmtool.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String register(Register register) {
@@ -36,7 +38,6 @@ public class AuthServiceImpl implements AuthService {
         user.setFullName(register.getFullName());
         user.setPassword(passwordEncoder.encode(register.getPassword()));
         user.setConfirmPassword("");
-//        System.out.println("hwll" + user);
 
         userRepository.save(user);
 
@@ -55,7 +56,9 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User logged-in successfully!";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
 }
