@@ -116,32 +116,4 @@ public class SecurityConfig {
         return http.build();
     };
 
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity
-//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .headers(headers -> headers.frameOptions().sameOrigin()) // To enable H2 Database
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // Protect /admin
-//                        .requestMatchers("/user/**").hasRole("USER") // Protect /user
-//                        .anyRequest().authenticated() // All other requests require authentication
-//                )
-//                .formLogin(login -> login
-//                        .loginPage("/login") // Custom login page
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .permitAll()
-//                );
-//
-//        return http.build();
-//    }
-
-
-
-
 }
