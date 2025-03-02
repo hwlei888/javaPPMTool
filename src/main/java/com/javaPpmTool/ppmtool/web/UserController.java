@@ -37,7 +37,7 @@ public class UserController {
     private UserValidator userValidator;
 
     @Autowired
-    private JwtTokenProvider tokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -54,8 +54,9 @@ public class UserController {
                 )
         );
 
+        // To make sure we have the right user so that to give a token
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
+        String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
 
         return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
     }
