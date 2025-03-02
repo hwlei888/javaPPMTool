@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         userDetails,
                         null, // not going to pass credentials cause not doing anything with passwords now, we're using token
                         Collections.emptyList() // param takes a list of roles, this project doesn't have roles
+//                        userDetails.getAuthorities()
                 );
 
                 // Add contextual information about the request (like IP address, session ID) to the authenticationToken
