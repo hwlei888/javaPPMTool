@@ -4,6 +4,7 @@ import com.javaPpmTool.ppmtool.domain.Backlog;
 import com.javaPpmTool.ppmtool.domain.Project;
 import com.javaPpmTool.ppmtool.domain.User;
 import com.javaPpmTool.ppmtool.exceptions.ProjectIdException;
+import com.javaPpmTool.ppmtool.exceptions.ProjectNotFoundException;
 import com.javaPpmTool.ppmtool.repositories.BacklogRepository;
 import com.javaPpmTool.ppmtool.repositories.ProjectRepository;
 import com.javaPpmTool.ppmtool.repositories.UserRepository;
@@ -23,6 +24,19 @@ public class ProjectService {
     private UserRepository userRepository;
 
     public Project saveOrUpdateProject(Project project, String username){
+
+        if(project.getId() != null){
+            Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+
+            if(existingProject != null && !existingProject.getProjectLeader().equals(username)){
+                throw new ProjectNotFoundException("Project not found in your account");
+            }else if(existingProject == null){
+                throw  new ProjectNotFoundException("Project with ID: '" + project.getProjectIdentifier() + "' cannot be updated because it doesn't exist");
+            }
+
+        }
+
+
         try{
             User user = userRepository.findByUsername(username);
 
